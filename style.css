@@ -1,0 +1,12 @@
+#scoreLink{
+    position: fixed;
+    top: 0;
+    left: 1%;
+    color: purple;
+}
+
+#timer{
+    position: fixed;
+    right: 1%;
+    top: 0;
+}
