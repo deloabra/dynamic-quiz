@@ -135,7 +135,7 @@ init();
 //button press handler
 main.addEventListener("click", function(event){
     var element = event.target;
-    if(element.matches("button")){
+    if(element.matches("button") && element.matches("#start-button")){
         quiz();
     }
     if(element.matches(".answer-choice")){
@@ -147,6 +147,7 @@ main.addEventListener("click", function(event){
         else{
             correctAnswer = "incorrect";
             time -= 5;
+            if(time < 0){time = 0;}
             timer.textContent = "time: " + time;
         }
         arrIndex++;
