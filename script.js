@@ -4,7 +4,7 @@ var main = document.querySelector("main");
 
 
 //TIME VARIABLE
-var time = 10;
+var time;
 var mainTime;
 
 //array of quesiton objects
@@ -31,6 +31,8 @@ var arrIndex = 0;
 
 //initialize website for first enter
 function init(){
+    time = 60;
+    clearInterval(mainTime);
     timer.textContent = "time: " + time;
     arrIndex = 0;
     displayMenu();
