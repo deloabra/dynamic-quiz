@@ -7,6 +7,9 @@ var main = document.querySelector("main");
 var time;
 var mainTime;
 
+//time penalty for getting a question wrong
+var penalty = 5;
+
 //array of quesiton objects
 //objects have question string, array for answer choice strings, and correct answer choice(index number of answer choice array)
 var questionArr = [
@@ -47,6 +50,7 @@ function quiz(){
         if(time <= 0){
             //end timer and change function
             clearInterval(mainTime);
+            endMenu();
         }
     }, 1000);
 
@@ -66,7 +70,7 @@ function displayMenu(){
     //main title
     title.setAttribute("class", "mainmenu");
     title.setAttribute("style", "text-emphasis: bolder; font-size: 28px;");
-    title.textContent = "Coding Quiz Challenge";
+    title.textContent = "Quiz Challenge";
     main.appendChild(title);
     
     //description
@@ -132,11 +136,24 @@ function displayPrevious(previousResult){
     }, 1000);
 }
 
+//display end menu
 function endMenu(){
 
     clearMain();
 
+    var title = document.createElement("p");
+    var subtitle = document.createElement("p");
+
+    //main title
+    title.setAttribute("style", "text-emphasis: bolder; font-size: 28px;");
+    title.textContent = "All Done!";
+    main.appendChild(title);
     
+    //description
+    subtitle.setAttribute("style", "font-size: 22px;");
+    subtitle.textContent = "Your final score is " + time + ".";
+    main.appendChild(subtitle);
+
 }
 
 
@@ -162,13 +179,15 @@ main.addEventListener("click", function(event){
         }
         else{
             correctAnswer = "incorrect";
-            time -= 5;
+            time -= penalty;
             if(time < 0){time = 0;}
             timer.textContent = "time: " + time;
         }
         arrIndex++;
         if(arrIndex === questionArr.length){
-            init();  //CHANGE THIS
+            clearInterval(mainTime);
+            endMenu();
+            displayPrevious(correctAnswer);
         }
         else{
             displayQuestion(questionArr[arrIndex]);
