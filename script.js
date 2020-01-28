@@ -50,7 +50,7 @@ function quiz(){
         }
     }, 1000);
 
-    displayQuestion(questionArr[0], "");
+    displayQuestion(questionArr[0]);
 
 }
 
@@ -83,8 +83,8 @@ function displayMenu(){
 
 }
 
-//question handler
-function displayQuestion(questionData, previousResult){
+//Display the current Question
+function displayQuestion(questionData){
 
     clearMain();
 
@@ -103,28 +103,42 @@ function displayQuestion(questionData, previousResult){
         buttonEl.appendChild(document.createElement("br"));
         main.appendChild(buttonEl);
     }
+}
 
-    //display if last answer was correct or incorrect
-    if(previousResult === "correct" || previousResult === "incorrect"){
-        //horizontal line
-        main.appendChild(document.createElement("hr"));
+//Display the result of the previous question
+function displayPrevious(previousResult){
 
-        //readying text
-        var resultDisplay = document.createElement("p");
+    var subMain = document.createElement("div");
+    //horizontal line
+    subMain.appendChild(document.createElement("hr"));
 
-        if(previousResult === "correct"){
-            resultDisplay.setAttribute("style", "color: green;");
-            resultDisplay.textContent = "Correct!";
-        }
-        else{
-            resultDisplay.setAttribute("style", "color: red;");
-            resultDisplay.textContent = "Wrong!"
-        }
+    //readying text
+    var resultDisplay = document.createElement("p");
 
-        main.appendChild(resultDisplay);
+    if(previousResult === "correct"){
+        resultDisplay.setAttribute("style", "color: green;");
+        resultDisplay.textContent = "Correct!";
+    }
+    else{
+        resultDisplay.setAttribute("style", "color: red;");
+        resultDisplay.textContent = "Wrong!"
     }
 
+    subMain.appendChild(resultDisplay);
+    main.appendChild(subMain);
+
+    setTimeout(function(){
+        main.removeChild(subMain)
+    }, 1000);
 }
+
+function endMenu(){
+
+    clearMain();
+
+    
+}
+
 
 //clear main for reuse
 function clearMain(){
@@ -157,7 +171,8 @@ main.addEventListener("click", function(event){
             init();  //CHANGE THIS
         }
         else{
-            displayQuestion(questionArr[arrIndex], correctAnswer);
+            displayQuestion(questionArr[arrIndex]);
+            displayPrevious(correctAnswer);
         }
     }
 });
