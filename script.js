@@ -32,8 +32,14 @@ var questionArr = [
 
 var arrIndex = 0;
 
-//initialize website for first enter
+//                                              initialize website for first enter
 function init(){
+
+    //set up local storage
+    if(localStorage.scores === undefined){
+        localStorage.scores = JSON.stringify([]);
+    }
+
     time = 60;
     clearInterval(mainTime);
     timer.textContent = "time: " + time;
@@ -41,7 +47,7 @@ function init(){
     displayMenu();
 }
 
-//quiz handler
+//                                                      quiz handler
 function quiz(){
 
     //countdown
@@ -58,7 +64,7 @@ function quiz(){
 
 }
 
-//main menu
+//                                                       main menu
 function displayMenu(){
 
     clearMain();
@@ -87,7 +93,7 @@ function displayMenu(){
 
 }
 
-//Display the current Question
+//                                          Display the current Question
 function displayQuestion(questionData){
 
     clearMain();
@@ -109,7 +115,7 @@ function displayQuestion(questionData){
     }
 }
 
-//Display the result of the previous question
+//                                 Display the result of the previous question
 function displayPrevious(previousResult){
 
     var subMain = document.createElement("div");
@@ -136,13 +142,16 @@ function displayPrevious(previousResult){
     }, 1000);
 }
 
-//display end menu
+//                                                          display end menu
 function endMenu(){
 
     clearMain();
 
     var title = document.createElement("p");
     var subtitle = document.createElement("p");
+    var submitForm = document.createElement("form");
+    var textInput = document.createElement("input");
+    var submitButton = document.createElement("button");
 
     //main title
     title.setAttribute("style", "text-emphasis: bolder; font-size: 28px;");
@@ -154,10 +163,27 @@ function endMenu(){
     subtitle.textContent = "Your final score is " + time + ".";
     main.appendChild(subtitle);
 
+    //submit form
+    submitForm.setAttribute("action", "highscores.html");
+
+    //set text box attributes
+    textInput.setAttribute("type", "text");
+    textInput.setAttribute("placeholder", "Enter Initials");
+
+    //set submit button attributes
+    submitButton.setAttribute("id", "submit-button");
+    submitButton.setAttribute("value", "Submit");
+    submitButton.setAttribute("type", "submit");
+    submitButton.textContent = "submit";
+
+    submitForm.appendChild(textInput);
+    submitForm.appendChild(submitButton);
+    main.appendChild(submitForm);
+
 }
 
 
-//clear main for reuse
+//                                                          clear main for reuse
 function clearMain(){
     main.innerHTML = "";
 }
@@ -165,10 +191,10 @@ function clearMain(){
 
 init();
 
-//button press handler
+//                                                          button press handler
 main.addEventListener("click", function(event){
     var element = event.target;
-    if(element.matches("button") && element.matches("#start-button")){
+    if(element.matches("#start-button")){
         quiz();
     }
     if(element.matches(".answer-choice")){
@@ -193,5 +219,13 @@ main.addEventListener("click", function(event){
             displayQuestion(questionArr[arrIndex]);
             displayPrevious(correctAnswer);
         }
+    }
+    if(element.matches("#submit-button")){
+        var localTemp = JSON.parse(localStorage.scores);
+        localTemp.push({
+            initials: element.previousSibling.value,
+            score: time
+        });
+        localStorage.scores = JSON.stringify(localTemp);
     }
 });

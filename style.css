@@ -1,7 +1,7 @@
 #scoreLink{
     float: left;
     text-align: start;
-    color: purple;
+    color: teal;
     text-decoration: none;
 }
 
@@ -13,7 +13,10 @@
     text-align: center;
 }
 
-
+input{
+    font-size: 16px;
+    padding: 5px 5px;
+}
 
 button{
     background-color: teal;
