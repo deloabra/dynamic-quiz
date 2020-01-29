@@ -24,7 +24,10 @@ function init(){
     //add high scores
     temp.forEach(element => {
         let liEl = document.createElement("li");
-        liEl.textContent = element.initials + " - " + element.score;
+        if(element.initials.trim() === ""){
+            element.initials = "anon";
+        }
+        liEl.textContent = element.initials.trim() + " - " + element.score;
         scoreList.appendChild(liEl);
     });
 

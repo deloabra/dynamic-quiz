@@ -7,15 +7,17 @@ var main = document.querySelector("main");
 var time;
 var mainTime;
 
+var prevAnsTimer;
+
 //time penalty for getting a question wrong
-var penalty = 5;
+var penalty = 6;
 
 //array of quesiton objects
 //objects have question string, array for answer choice strings, and correct answer choice(index number of answer choice array)
 var questionArr = [
-    {question: "what is my name?",
-    choices: ["Brayden", "Jim", "Brady", "I don't have one"],
-    answer: 0},
+    {question: "Which of the following was owned by the fewest U.S. homes in 1990?",
+    choices: ["home computer", "compact disk player", "cordless phone", "dishwasher"],
+    answer: 1},
     
     {question: "What is the square root of 144?",
     choices: ["11", "14", "4", "12"],
@@ -27,12 +29,36 @@ var questionArr = [
 
     {question: "What is the smalles island country?",
     choices: ["Tuvala", "Palau", "Nauru", "Malta"],
-    answer: 2}];
+    answer: 2},
+
+    {question: "During the 1980s for six consecutive years what breed of dog was the most popular in the U.S.?",
+    choices: ["Cocker Spaniel", "German Sheperd", "Laborador Retriever", "Poodle"],
+    answer: 0},
+
+    {question: "In 1985, five percent of U.S. households had telephone answering machines. By 1990 what percentage of homes had answering machines?",
+    choices: ["10", "15", "31", "51"],
+    answer: 2},
+
+    {question: "The Brownie Box Camera introduced by Eastman Kodak in 1900 had a retail price of what?",
+    choices: ["$1", "$5", "$10", "$20"],
+    answer: 0},
+
+    {question: "The Philadelphia mint started putting a \"P\" mint mark on quarters when?",
+    choices: ["1960", "1980", "never"],
+    answer: 1},
+
+    {question: "What did the \"D\" in \"D-Day\" stand for?",
+    choices: ["doom", "day", "Dwight (Eisenhower)", "Dunkirk"],
+    answer: 1},
+
+    {question: "Which of these characters turned 40 years old in 1990?",
+    choices: ["Charlie Brown", "Bugs Bunny", "Mickey Mouse", "Fred Flintstone"],
+    answer: 0}];
 
 
 var arrIndex = 0;
 
-//                                              initialize website for first enter
+//initialize website for first enter
 function init(){
 
     //set up local storage
@@ -47,7 +73,7 @@ function init(){
     displayMenu();
 }
 
-//                                                      quiz handler
+//quiz handler
 function quiz(){
 
     //countdown
@@ -56,6 +82,8 @@ function quiz(){
         if(time <= 0){
             //end timer and change function
             clearInterval(mainTime);
+            time = 0;
+            timer.textContent = "time: " + time;
             endMenu();
         }
     }, 1000);
@@ -64,7 +92,7 @@ function quiz(){
 
 }
 
-//                                                       main menu
+//main menu
 function displayMenu(){
 
     clearMain();
@@ -93,7 +121,7 @@ function displayMenu(){
 
 }
 
-//                                          Display the current Question
+//Display the current Question
 function displayQuestion(questionData){
 
     clearMain();
@@ -115,7 +143,7 @@ function displayQuestion(questionData){
     }
 }
 
-//                                 Display the result of the previous question
+//Display the result of the previous question
 function displayPrevious(previousResult){
 
     var subMain = document.createElement("div");
@@ -137,12 +165,12 @@ function displayPrevious(previousResult){
     subMain.appendChild(resultDisplay);
     main.appendChild(subMain);
 
-    setTimeout(function(){
+    prevAnsTimer = setTimeout(function(){
         main.removeChild(subMain)
     }, 1000);
 }
 
-//                                                          display end menu
+//display end menu
 function endMenu(){
 
     clearMain();
@@ -183,15 +211,16 @@ function endMenu(){
 }
 
 
-//                                                          clear main for reuse
+//clear main for reuse
 function clearMain(){
+    clearTimeout(prevAnsTimer);
     main.innerHTML = "";
 }
 
 
 init();
 
-//                                                          button press handler
+//button press handler
 main.addEventListener("click", function(event){
     var element = event.target;
     if(element.matches("#start-button")){
